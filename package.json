@@ -57,9 +57,9 @@
     "test": "nyc --reporter=lcov --reporter=html --reporter=text-summary npm run test-bare",
     "lint": "eslint . --cache",
     "docs": "node scripts/generate-readme.js",
-    "integration-test-cleanup": "node scripts/integration-test-cleanup.js",
-    "simple-integration-test": "jest --maxWorkers=5 simple-suite",
-    "complex-integration-test": "jest --maxWorkers=5 integration",
+    "simple-integration-test": "jest --maxWorkers=5 integration-simple",
+    "thorough-integration-test": "jest --maxWorkers=5 integration-thorough",
+    "integration-test-cleanup": "node tests/utils/aws-cleanup.js",
     "postinstall": "node ./scripts/postinstall.js"
   },
   "mocha": {
@@ -70,8 +70,20 @@
     "testRegex": "(\\.|/)(tests)\\.js$",
     "testEnvironment": "node",
     "setupFilesAfterEnv": [
-      "<rootDir>/tests/setupTests.js"
-    ]
+      "<rootDir>/tests/setup-tests.js"
+    ],
+    "testRunner": "jest-circus/runner"
+  },
+  "nyc": {
+    "description": "test coverage",
+    "exclude": [
+      "**/*.test.js",
+      "tests/**"
+    ],
+    "reporter": [
+      "lcov"
+    ],
+    "report-dir": "./coverage"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -85,6 +97,7 @@
     "eslint-plugin-import": "^1.13.0",
     "eslint-plugin-jsx-a11y": "^2.1.0",
     "eslint-plugin-react": "^6.1.1",
+    "jest-circus": "^24.8.0",
     "jest-cli": "^24.5.0",
     "markdown-link": "^0.1.1",
     "markdown-magic": "^0.1.25",
